@@ -1,4 +1,3 @@
-import glob
 import os
 import json
 import spacy
@@ -7,10 +6,6 @@ from nltk import RegexpTokenizer
 tokenizer = RegexpTokenizer(r'\w+')
 nlp = spacy.load('fr_core_news_sm')
 
-# Stopwords français
-sw = set()
-for word in nlp.Defaults.stop_words:
-    sw.update(tokenizer.tokenize(word.lower()))
 
 def load_files(file_paths):
     text_names = []
