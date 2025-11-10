@@ -5,11 +5,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def tfidf():
+    print("Calculating TF-IDF matrix...")
     data_directory = "wiki_split_extract_2k"
     file_list = glob.glob(os.path.join(data_directory, 'wiki_*.txt'))
+    print(f"Found {len(file_list)} files.")
     files = preprocessing.load_files(file_list)
+    print("Files loaded.")
     texts, text_names = files
     cleaned_texts = [preprocessing.clean_text(text) for text in texts]
-    vectorizer = TfidfVectorizer()
+    print(f"Cleaned texts: {len(cleaned_texts)}")
+    vectorizer = TfidfVectorizer(ngram_range=(1, 2), strip_accents='unicode')
     tfidf_matrix = vectorizer.fit_transform(cleaned_texts)
+    print("TF-IDF matrix calculated.")
     return tfidf_matrix, text_names, vectorizer

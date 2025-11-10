@@ -1,11 +1,16 @@
 import os
 import json
 import spacy
-from nltk import RegexpTokenizer
+from spacy.cli import download as spacy_download
 
-tokenizer = RegexpTokenizer(r'\w+')
-nlp = spacy.load('fr_core_news_sm')
+def load_spacy_model(name="fr_core_news_sm"):
+    try:
+        return spacy.load(name)
+    except OSError:
+        spacy_download(name)
+        return spacy.load(name)
 
+nlp = load_spacy_model()
 
 def load_files(file_paths):
     text_names = []
