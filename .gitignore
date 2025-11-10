@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+# Ignorer le dossier de split et le fichier de requêtes
+wiki_split_extract_2k/
+requetes.jsonl
+
+
 # Distribution / packaging
 .Python
 build/
