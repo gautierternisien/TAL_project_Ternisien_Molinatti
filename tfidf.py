@@ -14,6 +14,9 @@ def tfidf():
     texts, text_names = files
     cleaned_texts = [preprocessing.clean_text(text) for text in texts]
     print(f"Cleaned texts: {len(cleaned_texts)}")
+
+    #de base ngram_range = (1, 1) mais (1,2) permet d'avoir de meilleures perf
+    #de base strip_accents = None, le passer à strip_accents='unicode' permet de passer d'une accuracy de 81% à 82%
     vectorizer = TfidfVectorizer(ngram_range=(1, 2), strip_accents='unicode')
     tfidf_matrix = vectorizer.fit_transform(cleaned_texts)
     print("TF-IDF matrix calculated.")
