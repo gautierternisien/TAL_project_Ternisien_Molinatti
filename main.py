@@ -26,7 +26,7 @@ def main():
     correct_pred = 0
     total_pred = 0
 
-    k = 3
+    k = 5
     correct_at_k = 0
 
     mrr_sum = 0.0
