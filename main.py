@@ -1,6 +1,6 @@
 import preprocessing
 import search
-import tfidf
+import tfidf_hand
 
 
 def reciprocal_rank(results, ground_truth_file):
@@ -21,7 +21,7 @@ def find_rank(results, ground_truth_file):
     return None
 
 def main():
-    tfidf_matrix, text_names, vectorizer = tfidf.tfidf()
+    tfidf_matrix, text_names, vectorizer = tfidf_hand.tfidf()
     queries = preprocessing.load_queries('requetes.jsonl')
     correct_pred = 0
     total_pred = 0
