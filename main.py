@@ -1,6 +1,8 @@
 import preprocessing
 import search
 import tfidf_hand
+import tfidf
+import time
 
 
 def reciprocal_rank(results, ground_truth_file):
@@ -20,8 +22,15 @@ def find_rank(results, ground_truth_file):
             return idx
     return None
 
-def main():
-    tfidf_matrix, text_names, vectorizer = tfidf_hand.tfidf()
+def is_in_top_k(results, ground_truth_file, k):
+    """Vérifie si ground_truth_file est présent dans les k premiers résultats."""
+    for fname, _score in results[:k]:
+        if fname == ground_truth_file:
+            return True
+    return False
+
+def main(version):
+    tfidf_matrix, text_names, vectorizer = version.tfidf()
     queries = preprocessing.load_queries('requetes.jsonl')
     correct_pred = 0
     total_pred = 0
@@ -46,12 +55,18 @@ def main():
         mrr_sum += rr1 + rr2
         num_queries += 2
 
+        # Recall@k : vérifie si le document est dans le top-k
+        if is_in_top_k(results1, ground_truth_file, k):
+            correct_at_k += 1
+
+        if is_in_top_k(results2, ground_truth_file, k):
+            correct_at_k += 1
+
         predicted_file1 = results1[0][0]
         predicted_file2 = results2[0][0]
 
         if predicted_file1 == ground_truth_file:
             correct_pred+=1
-            correct_at_k+=1
             print(f"[Correct] Correct prediction for {query1} 1")
         else:
             full_results1 = search.search(query1, vectorizer, tfidf_matrix, text_names, top_n=len(text_names))
@@ -60,7 +75,6 @@ def main():
             print(f"[FAUX] Incorrect prediction for {query1} 1: predicted {predicted_file1}, expected {ground_truth_file} ({rank_msg1})")
         if predicted_file2 == ground_truth_file:
             correct_pred+=1
-            correct_at_k+=1
             print(f"[Correct] Correct prediction for {query2} 2")
         else :
             full_results2 = search.search(query2, vectorizer, tfidf_matrix, text_names, top_n=len(text_names))
@@ -71,8 +85,8 @@ def main():
     accuracy = correct_pred / total_pred if total_pred > 0 else 0
     print(f"Accuracy: {accuracy:.2%}")
 
-    precision_at_k = correct_at_k / total_pred if total_pred > 0 else 0
-    print(f"Precision at {k}: {precision_at_k:.2%}")
+    recall_at_k = correct_at_k / total_pred if total_pred > 0 else 0
+    print(f"Recall@{k}: {recall_at_k:.2%}")
 
     # MRR computation and display
     mrr = (mrr_sum / num_queries) if num_queries > 0 else 0.0
@@ -80,4 +94,17 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    print("Utilisation de TF-IDF codé à la main:")
+    start_time = time.time()
+    version = tfidf_hand
+    main(version)
+    hand_time = time.time() - start_time
+    print(f"Temps d'exécution TF-IDF manuel: {hand_time:.2f}s")
+
+    print("\nUtilisation de TF-IDF de sklearn:")
+    start_time = time.time()
+    version = tfidf
+    main(version)
+    sklearn_time = time.time() - start_time
+    print(f"Temps d'exécution TF-IDF sklearn: {sklearn_time:.2f}s")
+
