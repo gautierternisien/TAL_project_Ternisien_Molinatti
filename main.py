@@ -90,7 +90,7 @@ def main(version):
 
     # MRR computation and display
     mrr = (mrr_sum / num_queries) if num_queries > 0 else 0.0
-    print(f"MRR@{k}: {mrr:.4f}")
+    print(f"MRR : {mrr:.4f}")
 
 
 if __name__ == "__main__":
