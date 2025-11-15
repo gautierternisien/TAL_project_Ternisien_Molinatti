@@ -94,12 +94,17 @@ def main(version):
 
 
 if __name__ == "__main__":
+    """
+    Décommenter ci dessous pour lancer le code avec la version TF-IDF codée à la main, mais ça dure 15 minutes
+    
+    
     print("Utilisation de TF-IDF codé à la main:")
     start_time = time.time()
     version = tfidf_hand
     main(version)
     hand_time = time.time() - start_time
     print(f"Temps d'exécution TF-IDF manuel: {hand_time:.2f}s")
+    """
 
     print("\nUtilisation de TF-IDF de sklearn:")
     start_time = time.time()
