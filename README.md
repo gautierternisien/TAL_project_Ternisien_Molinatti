@@ -14,12 +14,15 @@ Projet Information Retrieval en Traitement Automatique des Langues (TAL)
    
 2. Naviguer dans le répertoire du projet
 
-3. Installer les dépendances nécessaires :
+3. Créer un environnement virtuel et le lancer pour éviter les collisions de dépendances
+
+4. Installer les dépendances nécessaires :
    ```bash
    pip install -r requirements.txt
    ```
    
-4. Exécuter le script principal :
+5. Exécuter le script principal :
    ```bash
    python main.py
     ```
+La première exécution peut prendre du temps car elle télécharge un modèle Français de SpaCy.
